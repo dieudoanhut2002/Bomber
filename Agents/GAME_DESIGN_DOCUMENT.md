@@ -78,7 +78,12 @@ flowchart TD
 - **Căn chỉnh lưới (Grid Snapping)**: Bom luôn được đặt tại tâm của ô lưới `(col * 48 + 24, row * 48 + 24)`.
 - **Số lượng tối đa (Capacity)**: Mặc định 1 quả cùng lúc (tăng lên khi nhặt vật phẩm Bomb Up).
 - **Thời gian nổ (Fuse Duration)**: 3.0 giây đếm ngược. Trong 3 giây này quả bom có hoạt ảnh phồng xẹp (pulse scale 1.0 -> 1.15) với nhịp độ tăng dần.
-- **Tính chất va chạm**: Sau khi đặt, quả bom ngay lập tức trở thành một chướng ngại vật rắn (Solid Obstacle). Người chơi chỉ có thể đi xuyên qua nó trong khoảng 0.2 giây đầu tiên để thoát ra ngoài nếu đứng trùng ô.
+- **Tính chất va chạm & Cơ chế đi xuyên (Pass-through)**: 
+  - Áp dụng cơ chế **Spatial Disjoint AABB (ADR-013)** thay cho quy tắc đếm giờ 0.2s cũ (bãi bỏ hoàn toàn).
+  - Người chơi vừa đặt bom được phép tự do đi xuyên qua quả bom đó cho đến khi toàn bộ AABB Hitbox của nhân vật không còn giao cắt với ô chứa bom (bước hoàn toàn ra ngoài ô bom).
+  - Ngay thời điểm bước hoàn toàn ra ngoài, quả bom lập tức hóa rắn (`isWalkable = false`), người chơi không thể đi ngược trở lại ô đó khi bom vẫn còn tồn tại.
+  - Quyền đi xuyên được quản lý độc lập theo từng Player và từng Quả bom (`playerBombPassThrough: Map<playerId, Set<bombId>>`). Các thực thể khác (quái vật, người chơi khác) bị chặn cứng ngay từ đầu.
+- **Hồi phục số lượng bom (Capacity Restoration)**: Ngay thời điểm quả bom phát nổ (`EXPLODING`), số lượng bom khả dụng của Player được hồi lại ngay lập tức (không cần đợi hết 0.4s tia lửa nổ biến mất).
 
 ### 3.3. Vụ Nổ & Tia Lửa (Explosion & Blast Waves)
 - **Hình dạng**: Lan truyền 4 hướng trực giao (Lên, Xuống, Trái, Phải) từ tâm quả bom.
@@ -86,10 +91,11 @@ flowchart TD
 - **Quy tắc chặn tia lửa (Raycasting Block Rules)**:
   - **Gặp Tường cứng (Hard Wall)**: Tia lửa bị chặn hoàn toàn tại ô đó và không lan tiếp.
   - **Gặp Gạch mềm (Soft Brick)**: Tia lửa phá hủy khối gạch đó, tạo hoạt ảnh vỡ vụn và **DỪNG LẠI**, không lan tiếp ra các ô phía sau.
-  - **Gặp Quả bom khác**: Kích nổ ngay lập tức quả bom đó (Chain Reaction).
+  - **Gặp Quả bom khác**: Kích nổ ngay lập tức quả bom đó (Chain Reaction), và tia lửa tiếp tục lan qua ô chứa quả bom đó nếu vẫn còn tầm nổ (theo DECISION 2 & ADR-013).
   - **Gặp Vật phẩm (Power-up)**: Thiêu rụi và xóa bỏ vật phẩm đó.
   - **Gặp Player hoặc Enemy**: Gây sát thương và tiêu diệt đối tượng.
 - **Thời gian tồn tại của tia lửa (Duration)**: 0.4 giây. Trong thời gian này, Hitbox của tia lửa hoạt động liên tục để quét va chạm.
+- **Gộp hiển thị tia lửa (Visual Stacking - DECISION 3)**: Khi nhiều vụ nổ cùng quét qua một ô lưới, hệ thống gộp hiển thị (render representation) theo ô để tránh chói lóa và tối ưu hiệu năng, nhưng quản lý độc lập từng contribution để không làm mất trạng thái gameplay. Tia lửa chỉ biến mất khi toàn bộ các vụ nổ trên ô đó kết thúc.
 
 ---
 

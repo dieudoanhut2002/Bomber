@@ -53,55 +53,119 @@ flowchart LR
   - Tạo cấu trúc thư mục rỗng chuẩn: `src/config/`, `src/core/`, `src/entities/`, `src/systems/`, `src/scenes/`, `src/ui/`, `src/utils/`, `src/types/`.
   - Thiết lập `BootScene` và `PreloadScene` cơ bản hiển thị màn hình khởi động đen với dòng chữ "BOMBER GAME V1.0".
 - **Tiêu chí nghiệm thu (Acceptance Criteria)**:
-  1. Chạy lệnh `npm install` thành công 100%, không xung đột phiên bản.
-  2. Lệnh `npm run dev` khởi động dev server mượt mà, mở trình duyệt thấy Canvas hiển thị khung game 720x672.
-  3. Lệnh `npm run build` tạo thư mục `dist/` hoàn chỉnh không có cảnh báo kiểu dữ liệu (0 type errors).
-  4. File workflow `.github/workflows/deploy.yml` có cú pháp hợp lệ theo chuẩn GitHub Actions.
+  1. [x] Chạy lệnh `npm install` thành công 100%, không xung đột phiên bản.
+  2. [x] Lệnh `npm run dev` khởi động dev server mượt mà, mở trình duyệt thấy Canvas hiển thị khung game 720x672.
+  3. [x] Lệnh `npm run build` tạo thư mục `dist/` hoàn chỉnh không có cảnh báo kiểu dữ liệu (0 type errors).
+  4. [x] File workflow `.github/workflows/deploy.yml` có cú pháp hợp lệ theo chuẩn GitHub Actions.
+  5. [x] Báo cáo nghiệm thu chi tiết lưu tại [`Agents/STAGE_1_REPORT.md`](file:///G:/GIT/Bomber/Agents/STAGE_1_REPORT.md).
 
 ---
 
 ## 📌 STAGE 2: LƯỚI BẢN ĐỒ & DI CHUYỂN NHÂN VẬT MƯỢT MÀ
 
-- **Mục tiêu**: Hiện thực hóa lưới ma trận 15x13, render các khối tường cứng, khối gạch mềm và cơ chế điều khiển nhân vật với hỗ trợ trượt góc (Corner Sliding).
-- **Nhiệm vụ cụ thể**:
-  - Tạo `GridConfig.ts` và `GridMath.ts` xử lý quy đổi tọa độ Grid `(col, row)` sang Pixel `(x, y)`.
-  - Tạo `GridSystem.ts` khởi tạo ma trận 15x13: tường bao quanh, cột trụ chẵn, ô an toàn `(1,1), (1,2), (2,1)`.
-  - Sinh ngẫu nhiên gạch mềm trên các ô trống theo cấu hình màn chơi.
-  - Vẽ tilemap/sprites cho sàn cỏ, tường đá và gạch mềm (sử dụng vector/canvas graphics hoặc sprite sheet pixel retro).
-  - Tạo lớp thực thể `Player.ts`:
-    - Nhận phím điều hướng Arrow/WASD.
-    - Cấu hình Hitbox kích thước `28x28` căn giữa.
-    - Bổ sung thuật toán Corner Sliding khi va chạm góc mép tường.
-    - Hoạt ảnh di chuyển 4 hướng (Bước chân đi Lên, Xuống, Trái, Phải).
-- **Tiêu chí nghiệm thu (Acceptance Criteria)**:
-  1. Bản đồ hiển thị chính xác theo bố cục chuẩn Bomberman 15x13.
-  2. Người chơi di chuyển mượt mà 4 hướng bằng bàn phím.
-  3. Nhân vật không thể đi xuyên qua Tường cứng hay Gạch mềm.
-  4. Khi đi quẹt vào góc tường, nhân vật tự động trượt vào hành lang mà không bị khựng lại.
+> **Lưu ý quản trị**: Theo phê duyệt của Tech Lead, Stage 2 được chia nhỏ có kiểm soát:
+> - **Stage 2A**: Technical Prerequisites (ĐÃ HOÀN THÀNH & ĐÃ NGHIỆM THU - xem [`Agents/STAGE_2A_REPORT.md`](file:///G:/GIT/Bomber/Agents/STAGE_2A_REPORT.md)).
+> - **Stage 2B**: Grid & Map System (ĐÃ HOÀN THÀNH & ĐÃ NGHIỆM THU - xem [`Agents/STAGE_2B_REPORT.md`](file:///G:/GIT/Bomber/Agents/STAGE_2B_REPORT.md)).
+> - **Stage 2C**: Player Entity & Smooth Movement với Corner Sliding (ĐÃ HOÀN THÀNH - xem [`Agents/STAGE_2C_REPORT.md`](file:///G:/GIT/Bomber/Agents/STAGE_2C_REPORT.md)).
+> - **Stage 2C.1**: Player Movement Polish & Architecture Hardening (ĐÃ HOÀN THÀNH - CHỜ NGHIỆM THU - xem [`Agents/STAGE_2C_1_REPORT.md`](file:///G:/GIT/Bomber/Agents/STAGE_2C_1_REPORT.md)).
+
+### Tiêu chí nghiệm thu Stage 2B (Grid & Map System):
+- [x] Tile definitions (`TileType`, `ITileProperties`) được xây dựng rõ ràng, type-safe.
+- [x] `GridSystem` hoạt động độc lập 100% với Phaser, xử lý biên an toàn.
+- [x] `GameMap` đại diện dữ liệu bản đồ hoàn chỉnh, bảo vệ tính bất biến bằng Deep Copy.
+- [x] `MapGenerator` sinh bản đồ 15x13 chuẩn GDD (tường bao, trụ cột, vùng an toàn, số lượng gạch mềm theo Stage).
+- [x] `MapGenerator` hỗ trợ PRNG Seed tất định (Deterministic - cùng seed ra cùng map).
+- [x] Phân biệt rõ ràng Hard Wall (cố định, không thể phá) và Soft Wall (có thể phá hủy về Empty hoặc lộ diện Exit Door).
+- [x] Unit Tests bao phủ đầy đủ (39/39 tests passed).
+- [x] `npm run typecheck` (0 errors), `npm run test` (100% pass), `npm run build` thành công.
+- [x] Chưa triển khai gameplay ngoài phạm vi (chưa có Player, Bomb, Enemy, Power-up).
+
+### Tiêu chí nghiệm thu Stage 2C (Player Entity & Smooth Movement / Corner Sliding):
+- [x] Player Entity triển khai đúng kiến trúc, kế thừa Arcade Physics Sprite.
+- [x] Player Spawn lấy trực tiếp từ `GameMap.getPlayerSpawn()`.
+- [x] Hitbox chuẩn mực 28x28 pixel căn giữa (offset 10px trên tile 48x48).
+- [x] Hỗ trợ đầy đủ phím mũi tên và WASD, xử lý đa phím theo cơ chế Last-Pressed Priority.
+- [x] Tự động giải phóng input listener khi Scene shutdown/destroy.
+- [x] Di chuyển mượt mà độc lập frame rate (vận tốc 120 px/s theo delta time).
+- [x] Không đi xuyên qua Tường cứng, Gạch mềm, hoặc ra ngoài biên bản đồ.
+- [x] Thuật toán Corner Sliding mượt mà khi va chạm góc mép tường <= 14px.
+- [x] Không xuyên thấu (Tunneling) nhờ kỹ thuật Sub-stepping (tối đa 4px/bước).
+- [x] Hoạt ảnh 4 hướng (Idle/Walk) nội suy procedural hoạt động sống động.
+- [x] Bộ Unit Tests độc lập gồm 66 bài test (100% pass).
+- [x] `npm run typecheck` (0 errors) và `npm run build` thành công.
+- [x] Chưa triển khai Bomb, Explosion, Enemy, Power-up ngoài phạm vi.
+
+### Tiêu chí nghiệm thu Stage 2C.1 (Movement Polish & Hardening - Xử lý AUD-01 -> AUD-05):
+- [x] **AUD-01**: Xác lập quyền kiểm soát vị trí duy nhất (Single Source of Authority), thiết lập `body.moves = false` trên Arcade Body để trở thành Kinematic Sensor Body, tránh xung đột vật lý và sẵn sàng cho Stage 3/5.
+- [x] **AUD-02**: Triển khai cơ chế Corridor Entry Auto-Centering (căn giữa khi vào hành lang hẹp 1 ô) song song với T-Junction Corner Rounding.
+- [x] **AUD-03**: Tính toán `forwardCol` / `forwardRow` dựa trên tọa độ đích `targetX` / `targetY` để triệt tiêu hoàn toàn sai số số thực float truncation.
+- [x] **AUD-04**: Chặn trần thời gian frame `deltaSeconds = Math.min(Math.max(0, deltaSeconds), 0.1)` ở cả Scene và CollisionSystem, giới hạn tối đa 3 bước sub-stepping, chống freeze/lag spike khi chuyển tab.
+- [x] **AUD-05**: Bổ sung bộ Unit Tests đối xứng cho các hướng LEFT, UP, kiểm tra ngưỡng biên 14px/15px và Corridor Entry (tổng 82 tests pass 100%).
+- [x] Ghi nhận kiến trúc chi tiết trong `Agents/DECISION_LOG.md` (ADR-012).
+- [x] Toàn bộ `npm run typecheck`, `npm run test` (82/82 tests), `npm run build` thành công 100%.
 
 ---
 
 ## 📌 STAGE 3: HỆ THỐNG ĐẶT BOM & VỤ NỔ LAN TRUYỀN (BLAST SYSTEM)
 
+> **Lưu ý quản trị**: Theo phê chuẩn của Tech Lead, Stage 3 được chia làm các giai đoạn kiểm soát:
+> - **Stage 3A**: Technical Design & Architecture Finalization (ĐÃ HOÀN THÀNH & ĐÃ CHỐT 3 QUYẾT ĐỊNH – xem [`Agents/STAGE_3A_TECHNICAL_DESIGN.md`](file:///G:/GIT/Bomber/Agents/STAGE_3A_TECHNICAL_DESIGN.md) và [`Agents/STAGE_3A_REPORT.md`](file:///G:/GIT/Bomber/Agents/STAGE_3A_REPORT.md)).
+> - **Stage 3B.1**: Bomb Core System Implementation (ĐÃ HOÀN THÀNH – xem [`Agents/STAGE_3B_1_REPORT.md`](file:///G:/GIT/Bomber/Agents/STAGE_3B_1_REPORT.md)).
+> - **Stage 3B.2**: Player Bomb Pass-through & Input Integration (ĐÃ HOÀN THÀNH – CHỜ NGHIỆM THU – xem [`Agents/STAGE_3B_2_REPORT.md`](file:///G:/GIT/Bomber/Agents/STAGE_3B_2_REPORT.md)).
+> - **Stage 3B.3**: Explosion System, Raycasting & Chain Reaction (CHỜ CẤP QUYỀN).
+> - **Stage 3B.4**: Visuals, Animations & GameScene Wiring (CHỜ CẤP QUYỀN).
+
+### Tiêu chí nghiệm thu Stage 3B.1 (Bomb Core System Implementation):
+- [x] Bomb types (`IBombData`, `BombState`, `IPlaceBombOptions`) và config (`BOMB_CONFIG`) độc lập với Phaser.
+- [x] `BombSystem` hoạt động Headless 100%, quản lý danh sách bom theo ID và Coord.
+- [x] State machine chuẩn xác: `ARMED` -> `EXPLODING` -> `FINISHED` và `ARMED` -> `TRIGGERED` -> `EXPLODING` -> `FINISHED`.
+- [x] Quản lý ownership và capacity độc lập theo `ownerId`.
+- [x] Giải phóng capacity ngay thời điểm bom phát nổ (`EXPLODING`), không giải phóng 2 lần, không tăng khi `FINISHED`.
+- [x] Tích hợp an toàn với `GridSystem`: cập nhật `TileType.BOMB` khi đặt và giải phóng về `TileType.EMPTY` khi nổ (ADR-013).
+- [x] Fuse countdown chính xác theo delta time, không đếm đúp, xử lý delta <= 0 an toàn.
+- [x] Typed EventBus type-safe (`BOMB_PLACED`, `BOMB_TRIGGERED`, `BOMB_EXPLODING`, `BOMB_EXPLODED`, `BOMB_FINISHED`).
+- [x] Bộ 34 Unit Tests bao phủ đầy đủ 5 nhóm (116/116 tests toàn dự án PASS 100%).
+- [x] `npm run typecheck` (0 errors) và `npm run build` thành công.
+- [x] Tuyệt đối không có scope creep (chưa làm Pass-through, Explosion, Visuals, Enemies).
+
+### Tiêu chí nghiệm thu Stage 3B.2 (Player Bomb Pass-through & Input Integration):
+- [x] Spacebar input Single-shot: chỉ kích hoạt đặt bom 1 lần khi nhấn, nhấn giữ không tự động lặp lại (No Auto-repeat), nhả phím và nhấn lại mới kích hoạt lần tiếp.
+- [x] Bomb đặt đúng ô Grid theo tọa độ tâm Player (`GridMath.worldToGrid`), snap chính xác và an toàn.
+- [x] Triển khai thuật toán Spatial Disjoint AABB (ADR-013): Player được đi xuyên quả bom vừa đặt khi AABB còn giao nhau với cell chứa bom.
+- [x] Thu hồi quyền đi xuyên ngay khi toàn bộ AABB của Player rời khỏi cell (`player.right <= cellLeft || player.left >= cellRight || player.bottom <= cellTop || player.top >= cellBottom`). Tiếp xúc đúng biên được coi là disjoint.
+- [x] Sau khi thu hồi quyền, Player không thể quay lại ô chứa bom khi bom vẫn tồn tại (ô bom trở thành chướng ngại vật rắn 1x1).
+- [x] Quản lý quyền đi xuyên độc lập theo từng Player và từng Bomb: `playerBombPassThrough: Map<playerId, Set<bombId>>`.
+- [x] Thực thể khác (Player 2, Enemies tương lai) không có quyền đi xuyên qua bom của Player 1 (`TileType.BOMB` có `isWalkable = false`).
+- [x] Bảo toàn trọn vẹn Corner Sliding (Corridor Entry Auto-Centering + T-Junction Rounding), Sub-stepping (4px) và Kinematic Movement (ADR-012).
+- [x] Tích hợp trơn tru BombSystem vào `GameScene` (lifecycle, update loop, cleanup khi shutdown/destroy, visual marker tạm thời).
+- [x] Bộ 24 Unit Tests Headless độc lập cho Pass-through và Input (nâng tổng số test toàn dự án lên 140/140 tests PASS 100%).
+- [x] `npm run typecheck` (0 errors) và `npm run build` thành công (bundle sạch sẽ, không lỗi).
+- [x] Giữ phạm vi nghiêm ngặt: Tuyệt đối không triển khai Explosion System, Raycasting, Chain Reaction (thuộc Stage 3B.3).
+
 - **Mục tiêu**: Triển khai cơ chế đặt bom, đếm ngược thời gian nổ, hiệu ứng tia lửa nổ 4 hướng chữ thập, phá vỡ gạch mềm và kích hoạt nổ dây chuyền.
 - **Nhiệm vụ cụ thể**:
   - Nhấn phím `Space` để thả bom tại tâm ô lưới người chơi đang đứng.
+  - Áp dụng cơ chế **Spatial Disjoint AABB Pass-through (ADR-013)** cho Player khi đặt bom.
   - Tạo thực thể `Bomb.ts`: đếm ngược 3.0 giây, hoạt ảnh phồng xẹp (pulse animation).
   - Triển khai `BombSystem.ts`:
     - Giới hạn số lượng bom đặt cùng lúc theo chỉ số của Player.
-    - Quản lý danh sách các quả bom đang hoạt động.
-    - Thuật toán Raycasting tính toán vùng nổ (dừng lại khi gặp Tường cứng, phá hủy Gạch mềm đầu tiên, lan qua ô trống).
-    - Phản ứng nổ dây chuyền: quả bom nằm trong tầm nổ của quả bom khác sẽ nổ ngay lập tức.
+    - Quản lý danh sách các quả bom đang hoạt động và danh sách Pass-through.
+    - Hồi phục capacity và giải phóng ô lưới trên `GridSystem` ngay thời điểm bom phát nổ (`EXPLODING`).
+    - Thuật toán Raycasting tính toán vùng nổ (dừng lại khi gặp Tường cứng, phá hủy Gạch mềm đầu tiên, quét qua ô trống và bom).
+    - Phản ứng nổ dây chuyền phi đệ quy (BFS Queue): quả bom nằm trong tầm nổ của quả bom khác sẽ nổ ngay lập tức, không lặp vô hạn.
   - Tạo thực thể `Explosion.ts`:
+    - Quản lý theo `CellExplosionTracker`: gộp hiển thị theo ô (Visual Stacking), bảo toàn gameplay state của từng contribution.
     - Render tia nổ tại tâm, các đoạn thân (Body segments) và đầu tia nổ (Tip segments).
     - Hitbox nổ tồn tại trong 0.4 giây rồi tự tiêu biến.
   - Xử lý phá vỡ gạch mềm: phát hoạt ảnh vụn vỡ và xóa ô đó trên ma trận lưới.
 - **Tiêu chí nghiệm thu (Acceptance Criteria)**:
   1. Người chơi chỉ đặt được số lượng bom tối đa cho phép.
   2. Bom tự động căn chỉnh ngay ngắn vào tâm ô lưới.
-  3. Bom nổ sau 3 giây; tia lửa nổ lan theo 4 hướng hình chữ thập.
-  4. Tia lửa không xuyên qua Tường cứng; phá hủy Gạch mềm đầu tiên và chặn lại.
-  5. Bom kích nổ quả bom khác ngay tức thì khi bị tia lửa chạm vào.
+  3. Người chơi đi xuyên bom vừa đặt cho đến khi bước hẳn ra ngoài; khi đã ra ngoài thì bom hóa rắn không thể đi ngược lại (ADR-013).
+  4. Bom nổ sau 3 giây; tia lửa nổ lan theo 4 hướng hình chữ thập.
+  5. Tia lửa không xuyên qua Tường cứng; phá hủy Gạch mềm đầu tiên và chặn lại.
+  6. Bom kích nổ quả bom khác ngay tức thì khi bị tia lửa chạm vào; tia lửa tiếp tục lan qua ô bom nếu còn tầm nổ.
+  7. Gộp visual representation khi nhiều vụ nổ cùng chiếm một ô lưới mà không làm mất trạng thái gameplay.
 
 ---
 

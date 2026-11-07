@@ -1,0 +1,32 @@
+/**
+ * Danh mục hằng số tên các sự kiện được sử dụng trong EventBus
+ */
+export const GameEvents = {
+  // Trạng thái Bom và Vụ nổ
+  BOMB_PLACED: 'BOMB_PLACED',
+  BOMB_TRIGGERED: 'BOMB_TRIGGERED',
+  BOMB_EXPLODING: 'BOMB_EXPLODING',
+  BOMB_EXPLODED: 'BOMB_EXPLODED',
+  BOMB_FINISHED: 'BOMB_FINISHED',
+  BLOCK_DESTROYED: 'BLOCK_DESTROYED',
+
+  // Vật phẩm bổ trợ
+  POWERUP_SPAWNED: 'POWERUP_SPAWNED',
+  POWERUP_COLLECTED: 'POWERUP_COLLECTED',
+
+  // Thực thể Quái vật & Người chơi
+  PLAYER_MOVED: 'PLAYER_MOVED',
+  PLAYER_DIRECTION_CHANGED: 'PLAYER_DIRECTION_CHANGED',
+  ENEMY_KILLED: 'ENEMY_KILLED',
+  ALL_ENEMIES_DEFEATED: 'ALL_ENEMIES_DEFEATED',
+  PLAYER_HIT: 'PLAYER_HIT',
+  PLAYER_DIED: 'PLAYER_DIED',
+
+  // Luồng màn chơi và Điểm số
+  SCORE_CHANGED: 'SCORE_CHANGED',
+  TIMER_TICK: 'TIMER_TICK',
+  STAGE_CLEARED: 'STAGE_CLEARED',
+  GAME_OVER: 'GAME_OVER',
+} as const;
+
+export type GameEventKey = keyof typeof GameEvents;
