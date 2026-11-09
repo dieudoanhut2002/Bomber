@@ -23,6 +23,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
   private facingDirection: Direction = 'DOWN';
   private isMovingState: boolean = false;
   private lastGridCoord: IGridCoord;
+  private blastPower: number = 1;
+  private moveSpeed: number = PLAYER_CONFIG.BASE_SPEED;
 
   constructor(
     scene: Phaser.Scene,
@@ -70,6 +72,22 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     return this.bombSystem;
   }
 
+  public getBlastPower(): number {
+    return this.blastPower;
+  }
+
+  public setBlastPower(power: number): void {
+    this.blastPower = Math.min(6, Math.max(1, power));
+  }
+
+  public getMoveSpeed(): number {
+    return this.moveSpeed;
+  }
+
+  public setMoveSpeed(speed: number): void {
+    this.moveSpeed = Math.max(80, speed);
+  }
+
   /**
    * Thực hiện đặt bom tại ô lưới hiện tại theo vị trí tâm Player
    */
@@ -81,6 +99,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     return this.bombSystem.tryPlaceBomb({
       ownerId: this.id,
       coord: currentGrid,
+      blastPower: this.blastPower,
     });
   }
 
@@ -116,7 +135,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
       this.y,
       direction,
       deltaSeconds,
-      this.id
+      this.id,
+      this.moveSpeed
     );
 
     // Cập nhật vị trí hiển thị và vật lý

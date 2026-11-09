@@ -269,6 +269,32 @@ export class BombSystem {
   }
 
   /**
+   * Kích nổ tức thì một quả bom phục vụ cơ chế nổ dây chuyền (Chain Reaction)
+   * Chỉ thực thi nếu bom ở trạng thái ARMED.
+   * Chuyển trạng thái ARMED -> TRIGGERED -> EXPLODING và giải phóng tài nguyên.
+   * Trả về IBombData của quả bom phát nổ, hoặc null nếu không hợp lệ.
+   */
+  public explodeImmediately(bombId: string): IBombData | null {
+    const bomb = this.bombsById.get(bombId);
+    if (!bomb || bomb.state !== 'ARMED') {
+      return null;
+    }
+
+    // Phát sự kiện BOMB_TRIGGERED
+    bomb.state = 'TRIGGERED';
+    EventBus.emit(GameEvents.BOMB_TRIGGERED, {
+      bombId: bomb.id,
+      ownerId: bomb.ownerId,
+      col: bomb.coord.col,
+      row: bomb.coord.row,
+    });
+
+    // Chuyển sang EXPLODING và giải phóng tài nguyên
+    this.transitionToExploding(bomb);
+    return this.cloneBombData(bomb);
+  }
+
+  /**
    * Hoàn tất vòng đời của một quả bom sau khi vụ nổ kết thúc
    * Chuyển trạng thái sang FINISHED và dọn dẹp khỏi bộ nhớ.
    * Quy tắc bắt buộc: Bomb phải đang ở trạng thái EXPLODING mới được FINISHED.

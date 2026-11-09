@@ -1,4 +1,5 @@
 import { GameEvents } from '@/core/GameEvents';
+import { IExplosionCreatedEvent, IExplosionFinishedEvent } from './Explosion.types';
 
 /**
  * Định nghĩa chi tiết kiểu dữ liệu payload cho từng sự kiện trong hệ thống
@@ -10,6 +11,8 @@ export interface IEventPayloadMap {
   [GameEvents.BOMB_EXPLODING]: { bombId: string; ownerId: string; col: number; row: number; power: number };
   [GameEvents.BOMB_EXPLODED]: { bombId: string; ownerId: string; col: number; row: number; power: number };
   [GameEvents.BOMB_FINISHED]: { bombId: string; ownerId: string; col: number; row: number };
+  [GameEvents.EXPLOSION_CREATED]: IExplosionCreatedEvent;
+  [GameEvents.EXPLOSION_FINISHED]: IExplosionFinishedEvent;
   [GameEvents.BLOCK_DESTROYED]: { col: number; row: number };
 
   // Vật phẩm bổ trợ

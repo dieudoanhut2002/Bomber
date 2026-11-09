@@ -120,7 +120,8 @@ export class PlayerCollisionSystem {
     currentY: number,
     direction: Direction,
     deltaSeconds: number,
-    playerId?: string
+    playerId?: string,
+    speed?: number
   ): IMovementResult {
     if (direction === 'NONE' || deltaSeconds <= 0) {
       return { x: currentX, y: currentY, isMoving: false, didSlide: false };
@@ -128,7 +129,8 @@ export class PlayerCollisionSystem {
 
     // AUD-04: Giới hạn deltaSeconds tối đa 0.1s (100ms) để ngăn chặn lag spike và giới hạn sub-stepping
     const clampedDelta = Math.min(Math.max(0, deltaSeconds), 0.1);
-    const totalDistance = PLAYER_CONFIG.BASE_SPEED * clampedDelta;
+    const currentSpeed = speed ?? PLAYER_CONFIG.BASE_SPEED;
+    const totalDistance = currentSpeed * clampedDelta;
     const maxStepSize = 4; // Bước kiểm tra tối đa 4px
     const steps = Math.max(1, Math.ceil(totalDistance / maxStepSize));
     const stepDistance = totalDistance / steps;

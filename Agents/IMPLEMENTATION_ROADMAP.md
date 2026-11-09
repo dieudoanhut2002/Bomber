@@ -109,10 +109,15 @@ flowchart LR
 ## 📌 STAGE 3: HỆ THỐNG ĐẶT BOM & VỤ NỔ LAN TRUYỀN (BLAST SYSTEM)
 
 > **Lưu ý quản trị**: Theo phê chuẩn của Tech Lead, Stage 3 được chia làm các giai đoạn kiểm soát:
-> - **Stage 3A**: Technical Design & Architecture Finalization (ĐÃ HOÀN THÀNH & ĐÃ CHỐT 3 QUYẾT ĐỊNH – xem [`Agents/STAGE_3A_TECHNICAL_DESIGN.md`](file:///G:/GIT/Bomber/Agents/STAGE_3A_TECHNICAL_DESIGN.md) và [`Agents/STAGE_3A_REPORT.md`](file:///G:/GIT/Bomber/Agents/STAGE_3A_REPORT.md)).
-> - **Stage 3B.1**: Bomb Core System Implementation (ĐÃ HOÀN THÀNH – xem [`Agents/STAGE_3B_1_REPORT.md`](file:///G:/GIT/Bomber/Agents/STAGE_3B_1_REPORT.md)).
-> - **Stage 3B.2**: Player Bomb Pass-through & Input Integration (ĐÃ HOÀN THÀNH – CHỜ NGHIỆM THU – xem [`Agents/STAGE_3B_2_REPORT.md`](file:///G:/GIT/Bomber/Agents/STAGE_3B_2_REPORT.md)).
-> - **Stage 3B.3**: Explosion System, Raycasting & Chain Reaction (CHỜ CẤP QUYỀN).
+> - **Stage 3A**: Technical Design & Architecture Finalization (ĐÃ HOÀN THÀNH & ĐÃ CHỐT 3 QUYẾT ĐỊNH – xem [`Agents/STAGE_3A_TECHNICAL_DESIGN.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3A_TECHNICAL_DESIGN.md) và [`Agents/STAGE_3A_REPORT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3A_REPORT.md)).
+> - **Stage 3B.1**: Bomb Core System Implementation (ĐÃ HOÀN THÀNH – xem [`Agents/STAGE_3B_1_REPORT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_1_REPORT.md)).
+> - **Stage 3B.2**: Player Bomb Pass-through & Input Integration (ĐÃ HOÀN THÀNH – xem [`Agents/STAGE_3B_2_REPORT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_2_REPORT.md)).
+> - **Stage 3B.3A**: Explosion System Technical Design & Architecture Specification (ĐÃ HOÀN TẤT THIẾT KẾ & KIỂM TOÁN – xem [`Agents/STAGE_3B_3A_TECHNICAL_DESIGN.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_3A_TECHNICAL_DESIGN.md), [`Agents/STAGE_3B_3A_REPORT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_3A_REPORT.md) và [`Agents/STAGE_3B_3A_TECHNICAL_AUDIT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_3A_TECHNICAL_AUDIT.md)).
+> - **Stage 3B.3A.1**: Technical Design Revision (ĐÃ HOÀN TẤT BẢN TU CHỈNH v1.1.0 – xem [`Agents/STAGE_3B_3A_1_REPORT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_3A_1_REPORT.md)).
+> - **Stage 3B.3A.2**: Decision Traceability Correction (ĐÃ HOÀN TẤT BẢN CHUẨN HÓA TRUY XUẤT NGUỒN GỐC v1.2.0 – xem [`Agents/STAGE_3B_3A_2_REPORT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_3A_2_REPORT.md)).
+> - **Stage 3B.3A.3**: Technical Design Consistency Correction (ĐÃ HOÀN TẤT BẢN CHUẨN HÓA TÍNH NHẤT QUÁN v1.3.0 – xem [`Agents/STAGE_3B_3A_3_REPORT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_3A_3_REPORT.md)).
+> - **Stage 3B.3A.4**: Final Governance & Technical Consistency Correction (ĐÃ HOÀN TẤT BẢN THIẾT KẾ v1.4.0 – PENDING REVIEW – xem [`Agents/STAGE_3B_3A_4_REPORT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_3A_4_REPORT.md)).
+> - **Stage 3B.3B**: Explosion Core Logic & BFS Chain Reaction Implementation (**STRICTLY NOT AUTHORIZED / PENDING APPROVAL** – CHỜ USER PHÊ DUYỆT BẢN THIẾT KẾ).
 > - **Stage 3B.4**: Visuals, Animations & GameScene Wiring (CHỜ CẤP QUYỀN).
 
 ### Tiêu chí nghiệm thu Stage 3B.1 (Bomb Core System Implementation):
@@ -141,6 +146,61 @@ flowchart LR
 - [x] Bộ 24 Unit Tests Headless độc lập cho Pass-through và Input (nâng tổng số test toàn dự án lên 140/140 tests PASS 100%).
 - [x] `npm run typecheck` (0 errors) và `npm run build` thành công (bundle sạch sẽ, không lỗi).
 - [x] Giữ phạm vi nghiêm ngặt: Tuyệt đối không triển khai Explosion System, Raycasting, Chain Reaction (thuộc Stage 3B.3).
+
+### Tiêu chí nghiệm thu Stage 3B.3A (Technical Design & Architecture Specification - ĐÃ HOÀN TẤT & ĐÃ KIỂM TOÁN):
+- [x] Hoàn thiện tài liệu thiết kế kỹ thuật toàn diện [`Agents/STAGE_3B_3A_TECHNICAL_DESIGN.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_3A_TECHNICAL_DESIGN.md) bao gồm 14 đề mục bắt buộc.
+- [x] Ma trận tương thích bảo tồn 100% các quyết định kỹ thuật đã phê chuẩn trong ADR-013 (Spatial Disjoint, Penetrating Blast, BFS Queue, 0.4s duration, Visual Merging).
+- [x] Tách biệt 10 Quyết định mở (Open Decisions) với đầy đủ câu hỏi kỹ thuật và phân tích đề xuất của Architect.
+- [x] Hoàn thiện tài liệu báo cáo nghiệm thu [`Agents/STAGE_3B_3A_REPORT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_3A_REPORT.md).
+- [x] Thực hiện phiên kiểm toán kỹ thuật độc lập [`Agents/STAGE_3B_3A_TECHNICAL_AUDIT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_3A_TECHNICAL_AUDIT.md).
+- [x] Giữ phạm vi nghiêm ngặt: Tuyệt đối KHÔNG viết mã nguồn gameplay trong Stage 3B.3A (0 dòng code gameplay bị chỉnh sửa).
+
+### Tiêu chí nghiệm thu Stage 3B.3A.1 (Technical Design Revision - ĐÃ HOÀN TẤT TU CHỈNH v1.1.0):
+- [x] Xử lý C1: Thiết lập Single Ownership cho Bomb lifecycle, phân định rõ method chịu trách nhiệm, loại bỏ nguy cơ double-release.
+- [x] Xử lý C2: Cơ chế xử lý theo mẻ (Batch Processing) cho nhiều bomb hết fuse cùng frame, phân biệt 4 loại bomb.
+- [x] Xử lý C3: Chuẩn hóa contract nhận diện bomb giữa `Raycaster`, `GridSystem` và `BombSystem` (tách bạch Grid Occupancy vs Bomb Entity).
+- [x] Xử lý C4: Phân loại toàn bộ 10 Open Decisions thành 4 trạng thái nghiêm ngặt, bảo tồn nguyên vẹn các ADR đã phê duyệt.
+- [x] Xử lý M1: Phân tích lại độ phức tạp thuật toán $O(N \cdot P)$, thay thế `Array.shift()` bằng hàng đợi trỏ Head Index.
+- [x] Xử lý M2: Mở rộng phạm vi `batchProcessedBombIds` trên toàn mẻ nổ của frame.
+- [x] Xử lý M3: Thiết kế quản lý thời lượng (lifetime) tập trung tại `IExplosionData`.
+- [x] Xử lý M4: Xây dựng bộ quy tắc hợp nhất đồ họa (Visual Aggregation Engine) tất định.
+- [x] Xử lý M5: Chuẩn hóa và mở rộng Test Matrix lên 35 test cases nhất quán có phân loại Approved vs Proposed.
+- [x] Xử lý Minor Findings: Chuẩn hóa `IRaycastQueryContext`, tính bất biến của `getActiveExplosions()`, idempotent cleanup, loại bỏ claim 60 FPS chưa benchmark.
+- [x] Hoàn thiện báo cáo kỹ thuật nghiệm thu [`Agents/STAGE_3B_3A_1_REPORT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_3A_1_REPORT.md).
+- [x] Giữ phạm vi nghiêm ngặt: 0 dòng code gameplay `src/` hoặc test bị chỉnh sửa, toàn bộ 140 Unit Tests đạt tỷ lệ Pass 100%, 0 lỗi typecheck.
+- [x] Chờ Technical Lead / User xem xét báo cáo Stage 3B.3A.1 (Đã chuyển tiếp sang Stage 3B.3A.2).
+
+### Tiêu chí nghiệm thu Stage 3B.3A.2 (Decision Traceability Correction - ĐÃ HOÀN TẤT CHUẨN HÓA v1.2.0):
+- [x] Khắc phục triệt để các mã ký hiệu phantom (`ADR-013.1` đến `ADR-013.7`), khôi phục trích dẫn chuẩn xác theo cấu trúc gốc của `DECISION_LOG.md` (ADR-013 Quyết định 1, 2, 3).
+- [x] Tái định vị nguồn gốc thời lượng $0.4\text{s}$ của tia lửa về đúng tài liệu gốc `GDD Mục 3.3` và `Roadmap Stage 3`.
+- [x] Đồng bộ hóa nguồn gốc toàn bộ 35 bài Unit Tests trong Ma trận Kiểm thử về đúng thẩm quyền gốc (`GDD 3.2`, `GDD 3.3`, `PRD US-02`, `ADR-012`, `ADR-013 Quyết định 1, 2, 3`).
+- [x] Hoàn thiện Sổ đăng ký Quyết định Mở hai chiều (Bidirectional Open Decisions Register), phân loại 4 cấp độ và liên kết thẩm quyền phê duyệt rõ ràng.
+- [x] Bảo tồn nguyên vẹn các ADR đã phê chuẩn (`ADR-001` đến `ADR-013`), không tự ý sửa đổi nội dung đã duyệt, không tự ý nâng cấp trạng thái các Open Decisions.
+- [x] Giữ phạm vi nghiêm ngặt: 0 dòng code gameplay `src/` hoặc `tests/` bị chỉnh sửa, toàn bộ 140 Unit Tests đạt tỷ lệ Pass 100%, 0 lỗi typecheck, build thành công.
+- [x] Hoàn thiện báo cáo kỹ thuật nghiệm thu [`Agents/STAGE_3B_3A_2_REPORT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_3A_2_REPORT.md).
+- [x] Chuyển tiếp kết quả sang Stage 3B.3A.3 để hiệu chỉnh đồng bộ tính nhất quán toàn diện.
+
+### Tiêu chí nghiệm thu Stage 3B.3A.3 (Technical Design Consistency Correction - ĐÃ HOÀN TẤT CHUẨN HÓA v1.3.0):
+- [x] **DT-05 (Damage vs Visual Lifetime)**: Tách biệt sơ khởi `damageRemainingTime` và `visualRemainingTime`.
+- [x] **DT-06 (Thống nhất Bomb Lifecycle)**: Xây dựng bảng trạng thái chuẩn tắc 6 cột (ARMED, TRIGGERED, EXPLODING, FINISHED).
+- [x] **DT-07 (Xác minh blastPower Semantics)**: Đối chiếu trực tiếp nguyên văn PRD US-02 và GDD 3.3.
+- [x] **DT-08 (Pipeline Count)**: Thống nhất tuyệt đối số lượng bước thành "Quy trình 10 bước chuẩn tắc".
+- [x] **DT-09 (Open Decisions Register & 4 Nhóm Trạng Thái)**: Bổ sung Khung Quản trị 4 nhóm trạng thái.
+- [x] **DT-10 (Git Evidence & Change Scope)**: Ghi lại đầy đủ bằng chứng git diff/status trước và sau chỉnh sửa.
+- [x] Nâng cấp tài liệu thiết kế kỹ thuật lên phiên bản `v1.3.0 (Stage 3B.3A.3)`.
+- [x] Hoàn thiện báo cáo kỹ thuật nghiệm thu [`Agents/STAGE_3B_3A_3_REPORT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_3A_3_REPORT.md).
+
+### Tiêu chí nghiệm thu Stage 3B.3A.4 (Final Governance & Technical Consistency Correction - ĐÃ HOÀN TẤT BẢN THIẾT KẾ v1.4.0):
+- [x] **DT-05 (Single Source of Truth & Phân định Lifetime)**: Xác lập `IExplosionData` là Authoritative Master State duy nhất. Loại bỏ dữ liệu trùng lặp trong `IExplosionContribution`. Phân định rõ 3 API: `isDamageActiveAt()` (gameplay hazard), `isVisualActiveAt()` (hiển thị), và `isExplosionAt()` (delegate chuẩn tắc sang `isVisualActiveAt()`). Xác nhận GDD 3.3 là baseline requirement hiện hành, OD-08 Phương án B là Proposed Change cần User phê chuẩn.
+- [x] **DT-06 (Chuẩn hóa Trình tự 12 Thao tác & Event Ordering)**: Trả lời cặn kẽ 12 câu hỏi vòng đời; chuẩn hóa event ordering (`BOMB_TRIGGERED` -> Enqueue BFS -> Dequeue -> `BOMB_EXPLODING` -> `EXPLOSION_CREATED` -> `EXPLOSION_FINISHED` -> `BOMB_FINISHED`), không phát event hoàn tất ở thời điểm bắt đầu nổ; mô tả chi tiết cơ chế boolean guard & single-execution bảo đảm Idempotency.
+- [x] **DT-07 (blastPower Requirement vs Proposed Change)**: Ghi nhận OD-01 Phương án A là cách triển khai khớp 100% với requirement gốc của GDD 3.3 và PRD US-02; ghi nhận Phương án B là Proposed Change làm thay đổi requirement; định nghĩa rõ `blastPower` là bán kính ray mở rộng không tính ô tâm.
+- [x] **DT-08 (Pipeline Count)**: Bảo toàn tuyệt đối Pipeline 10 bước chuẩn tắc, không mở lại finding đã đạt.
+- [x] **DT-09 (Phân rã Minh bạch Khung Quản trị 4 Nhóm Trạng Thái)**: Giữ nguyên 4 nhóm trạng thái của Governance, phân rã nhóm Approved thành 6 Approved Architectural Decisions (ADR) và 5 Approved Product Requirements (GDD/PRD) rõ ràng, không gộp chung gây hiểu lầm thống kê.
+- [x] **DT-10 (Bằng chứng Git & Hash SHA-256 cho Untracked Files)**: Thu thập đầy đủ 5 lệnh Git (stat, name-status, cached), kiểm tra hash SHA-256 trước/sau cho các untracked files để chứng minh tính toàn vẹn; nêu rõ giới hạn kiểm chứng thực tế.
+- [x] **Sửa Mục 13 (Loại bỏ mâu thuẫn lựa chọn mặc định)**: Loại bỏ triệt để phát biểu "Agent tự ý chọn A làm mặc định", khẳng định tuân thủ baseline requirement của GDD 3.3 cho đến khi User duyệt đề xuất thay đổi.
+- [x] Nâng cấp tài liệu thiết kế kỹ thuật lên phiên bản `v1.4.0 (Final Architecture Specification)`.
+- [x] Hoàn thiện báo cáo kỹ thuật nghiệm thu [`Agents/STAGE_3B_3A_4_REPORT.md`](file:///C:/Git/Bomber/Bomber/Agents/STAGE_3B_3A_4_REPORT.md).
+- [ ] Chờ Technical Lead / User xem xét báo cáo Stage 3B.3A.4 và phê chuẩn Technical Design v1.4.0 trước khi cấp quyền bắt đầu viết code Stage 3B.3B (Stage 3B.3B hiện tại: **STRICTLY NOT AUTHORIZED / PENDING APPROVAL**).
 
 - **Mục tiêu**: Triển khai cơ chế đặt bom, đếm ngược thời gian nổ, hiệu ứng tia lửa nổ 4 hướng chữ thập, phá vỡ gạch mềm và kích hoạt nổ dây chuyền.
 - **Nhiệm vụ cụ thể**:
