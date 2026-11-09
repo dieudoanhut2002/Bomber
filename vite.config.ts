@@ -3,8 +3,8 @@ import { defineConfig } from 'vite';
 import path from 'path';
 
 export default defineConfig({
-  // Tương thích cả chạy dev cục bộ, deploy GitHub Pages (/Bomber/) và tùy biến BASE_PATH
-  base: process.env.BASE_PATH || (process.env.NODE_ENV === 'production' ? '/Bomber/' : '/'),
+  // Sử dụng relative path './' để đảm bảo game chạy hoàn hảo trên GitHub Pages (tránh lệch chữ hoa/thường tên repo)
+  base: './',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
